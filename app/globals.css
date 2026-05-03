@@ -1,0 +1,195 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Warm cream white background */
+  --background: #F0E7D5;
+  --foreground: #212842;
+  --card: #F5EDDF;
+  --card-foreground: #212842;
+  --popover: #F0E7D5;
+  --popover-foreground: #212842;
+
+  /* Deep navy as the signature primary */
+  --primary: #212842;
+  --primary-foreground: #F0E7D5;
+  --secondary: #E3D9C6;
+  --secondary-foreground: #212842;
+  --muted: #E3D9C6;
+  --muted-foreground: #5A6478;
+
+  /* Navy accent */
+  --accent: #212842;
+  --accent-foreground: #F0E7D5;
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: #D9CDB8;
+  --input: #D9CDB8;
+  --ring: #212842;
+
+  --chart-1: #212842;
+  --chart-2: #303A52;
+  --chart-3: #5A6478;
+  --chart-4: #8E99AF;
+  --chart-5: #B8C1D1;
+
+  --radius: 0.625rem;
+
+  --sidebar: #E9DDCB;
+  --sidebar-foreground: #212842;
+  --sidebar-primary: #212842;
+  --sidebar-primary-foreground: #F0E7D5;
+  --sidebar-accent: #D1C4B0;
+  --sidebar-accent-foreground: #212842;
+  --sidebar-border: #D1C4B0;
+  --sidebar-ring: #212842;
+
+  /* Dot grid — subtle navy tint */
+  --dot-color: rgba(33, 40, 66, 0.08);
+}
+
+.dark {
+  /* Cool deep navy background */
+  --background: #212842;
+  --foreground: #F0E7D5;
+  --card: #2A334E;
+  --card-foreground: #F0E7D5;
+  --popover: #212842;
+  --popover-foreground: #F0E7D5;
+
+  /* Cream brightens in dark mode for contrast */
+  --primary: #F0E7D5;
+  --primary-foreground: #212842;
+  --secondary: #303A52;
+  --secondary-foreground: #F0E7D5;
+  --muted: #303A52;
+  --muted-foreground: #8E99AF;
+  --accent: #F0E7D5;
+  --accent-foreground: #212842;
+
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #303A52;
+  --input: #303A52;
+  --ring: #F0E7D5;
+
+  --chart-1: #F0E7D5;
+  --chart-2: #E3D9C6;
+  --chart-3: #D9CDB8;
+  --chart-4: #8E99AF;
+  --chart-5: #5A6478;
+
+  --sidebar: #2A334E;
+  --sidebar-foreground: #F0E7D5;
+  --sidebar-primary: #F0E7D5;
+  --sidebar-primary-foreground: #212842;
+  --sidebar-accent: #303A52;
+  --sidebar-accent-foreground: #F0E7D5;
+  --sidebar-border: #303A52;
+  --sidebar-ring: #F0E7D5;
+
+  /* Dot grid — subtle cream tint */
+  --dot-color: rgba(240, 231, 213, 0.1);
+}
+
+@theme inline {
+  --font-sans: var(--font-dmsans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --animate-fade-in: fadeIn 0.6s ease-out;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* subtle dot grid — theme-aware indigo tint */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 28px 28px;
+    z-index: 0;
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    background-color: color-mix(in oklch, var(--background) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg;
+  }
+
+  .fade-in {
+    animation: var(--animate-fade-in);
+  }
+
+  .container-center {
+    @apply max-w-4xl mx-auto px-6 md:px-8 relative;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
