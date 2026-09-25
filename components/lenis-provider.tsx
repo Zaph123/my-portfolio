@@ -15,16 +15,28 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
-      gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
-      infinite: false,
-      autoResize: true,
     })
+
+    // Wire anchor links to Lenis scroll
+    const handleAnchor = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a[href^="#"]')
+      if (target && lenisRef.current) {
+        const id = target.getAttribute('href')?.slice(1)
+        if (id) {
+          e.preventDefault()
+          const el = document.getElementById(id)
+          if (el) lenisRef.current.scrollTo(el, { offset: -80 })
+        }
+      }
+    }
+    document.addEventListener('click', handleAnchor)
 
     // Cleanup on unmount
     return () => {
+      document.removeEventListener('click', handleAnchor)
       lenisRef.current?.destroy()
       lenisRef.current = null
     }
