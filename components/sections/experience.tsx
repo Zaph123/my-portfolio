@@ -3,165 +3,87 @@
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { fadeLeft, fadeRight, fadeUp, viewport } from '@/hooks/use-scroll-animation'
+import { fadeUp, staggerContainer, viewport } from '@/hooks/use-scroll-animation'
 
 const experiences = [
   {
-    title: 'Lead Frontend Engineer',
-    company: 'Starrik',
-    duration: '2022 - Present',
+    title: 'Frontend Engineer',
+    company: 'Churchera (Remote)',
+    duration: 'Jan 2026 — Present',
     description:
-      'Leading frontend architecture and development of real-time courier tracking platform. Mentored 3 junior developers and improved app performance by 40%.',
-    highlights: ['Real-time GPS tracking', 'WebSocket integration', 'Performance optimization', 'Team mentoring'],
+      'Digital Finance & Church Management Ecosystem (churchera.com) -- Engineered a high-fidelity FaithTech platform facilitating seamless tithing, offerings, and donations for global congregations.\n Developed responsive web interfaces for desktop and mobile using Next.js and TailwindCSS, with efficient state management via Zustand.\n Designed a secure role-based access control (RBAC) architecture for Admin and Member dashboards, ensuring data privacy for sensitive financial records.\n Leveraged Supabase for real-time transaction tracking and database management.',
+    highlights: ['Next.js', 'TailwindCSS', 'Zustand', 'Supabase', 'RBAC'],
   },
   {
-    title: 'Senior Frontend Developer',
-    company: 'Churchera',
-    duration: '2020 - 2022',
+    title: 'Frontend Engineer',
+    company: 'Traytic (Remote)',
+    duration: 'Jul 2026 — Aug 2026',
     description:
-      'Developed faith-tech platform managing finances and community engagement. Implemented payment integration and increased user retention by 35%.',
-    highlights: ['Payment integration', 'User authentication', 'Data visualization', 'API optimization'],
+      'Platform: "GodMode" -- an operating system for hosting agencies across Africa (traytic.com)\n Built core admin screens with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS v4: an analytics overview with revenue/agency/growth metrics and Recharts visualizations, Plans & Addons management, and an Agencies workspace.\n Implemented Plans & Add-ons management with sortable, searchable, paginated tables, trial/grace-period lifecycle configuration, and lock / deactivate / restore / rename actions with confirmation flows.\n Built the Agencies workspace with status filters, debounced search, CSV bulk import, and admin actions (suspend, terminate, extend trial, impersonate) backed by typed mutation hooks.\n Shipped the end-to-end authentication experience -- sign-in, sign-up, password reset, email verification, and TOTP -- with Zod validation, a password-strength indicator, international phone input, and Cloudflare Turnstile bot protection.\n Contributed to the Traytic design system (design tokens, shadcn/Base UI primitives, GSAP + Motion animation) and enforced accessibility and responsiveness across every screen.\n Collaborated with backend engineers, designers, and product in a small cross-functional team using a Git feature-branch workflow with pull requests on GitHub.',
+    highlights: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4', 'Recharts', 'Zod', 'Cloudflare Turnstile'],
+  },
+  {
+    title: 'Lead Frontend Engineer',
+    company: 'Starrik (Remote)',
+    duration: 'Sep 2024 — Dec 2025',
+    description:
+      'Logistic company (starrik.com) -- Lead front-end development of a courier-tech platform, built a modern delivery platform with real-time order tracking and vendor dashboards using React.js.\n Integrate Firebase (Auth, Firestore, Storage) as a backend-as-a-service for real-time data and file storage, partnering with backend engineers on API design and enforcing coding best practices.',
+    highlights: ['React.js', 'Firebase', 'Real-time tracking', 'Vendor dashboards'],
   },
   {
     title: 'Frontend Developer',
-    company: 'Roothub',
-    duration: '2018 - 2020',
+    company: 'Roothub, Uyo, Akwa Ibom',
+    duration: 'Dec 2024 — 2025',
     description:
-      'Built responsive web applications and contributed to product strategy. Increased page load speed by 50% through code optimization.',
-    highlights: ['Responsive design', 'Cross-browser testing', 'Performance tuning', 'Feature development'],
+      'Completed a web development program focused on building scalable, production-ready websites.\n Collaborated with developers and UI/UX designers to ship user-friendly interfaces, debugging and resolving front-end issues to improve overall user satisfaction.',
+    highlights: ['Web Development', 'UI/UX Collaboration', 'User Satisfaction'],
   },
 ]
-
-interface Exp {
-  title: string
-  company: string
-  duration: string
-  description: string
-  highlights: string[]
-}
-
-/** Card that slides in from the given side */
-function TimelineCard({ exp, from }: { exp: Exp; from: 'left' | 'right' }) {
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
-      variants={from === 'left' ? fadeLeft : fadeRight}
-      className="rounded-xl border border-border bg-card p-5 space-y-3 w-full"
-    >
-      <div className="flex flex-wrap justify-between items-start gap-2">
-        <div>
-          <h3 className="font-bold text-base leading-snug">{exp.title}</h3>
-          <p className="text-accent font-semibold text-sm">{exp.company}</p>
-        </div>
-        <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1 rounded-full whitespace-nowrap">
-          {exp.duration}
-        </span>
-      </div>
-      <p className="text-sm leading-relaxed text-foreground/80">{exp.description}</p>
-      <div className="flex flex-wrap gap-2 pt-1">
-        {exp.highlights.map((h, i) => (
-          <span
-            key={i}
-            className="px-2 py-1 text-xs border border-border rounded text-muted-foreground"
-          >
-            {h}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  )
-}
-
-/** Animated dot that pops onto the timeline line */
-function TimelineDot({ index }: { index: number }) {
-  return (
-    <motion.div
-      className="w-4 h-4 rounded-full border-2 border-accent bg-background relative z-10"
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      viewport={viewport}
-      transition={{ delay: 0.08 * index, duration: 0.4, ease: 'backOut' }}
-    />
-  )
-}
 
 export function ExperienceSection() {
   const containerRef = useRef<HTMLElement>(null)
 
   return (
-    <section ref={containerRef} id="experience" className="py-20 md:py-32 overflow-hidden relative">
+    <section ref={containerRef} id="experience" className="py-24 md:py-36 overflow-hidden relative">
       <div className="container-center">
         <SectionHeading title="Experience" containerRef={containerRef} />
 
-        {/* ── Timeline wrapper ── */}
-        <div className="relative">
-
-          {/*
-           * Vertical growing line
-           * Mobile  → positioned at left-[7px] (centre of 14px dot that starts at left-0)
-           * Desktop → positioned at left-1/2   (centre of the 40px grid column)
-           */}
-          <motion.div
-            className="absolute top-0 w-px
-                        left-[7px]
-                        md:left-1/2 md:-translate-x-px
-                        bg-linear-to-b from-accent via-accent/40 to-transparent"
-            style={{ bottom: '0.5rem', transformOrigin: 'top' }}
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-          />
-
-          <div className="space-y-8 md:space-y-0">
-            {experiences.map((exp, index) => {
-              const isLeft = index % 2 === 0   // even → card on left side (desktop)
-
-              return (
-                <div key={index} className="md:pb-14 md:last:pb-0">
-
-                  {/* ────────── MOBILE layout ────────── */}
-                  {/* Single column, dot on the left rail, card to the right */}
-                  <div className="relative pl-8 md:hidden">
-                    <div className="absolute left-0 top-1.5">
-                      <TimelineDot index={index} />
-                    </div>
-                    <TimelineCard exp={exp} from="right" />
-                  </div>
-
-                  {/* ────────── DESKTOP layout ────────── */}
-                  {/*
-                   * 3-column grid: [1fr] [40px dot column] [1fr]
-                   * Even entries: card on LEFT  →  right cell is empty
-                   * Odd  entries: card on RIGHT → left  cell is empty
-                   */}
-                  <div
-                    className="hidden md:grid md:items-center"
-                    style={{ gridTemplateColumns: '1fr 40px 1fr' }}
-                  >
-                    {/* Left cell */}
-                    <div className="pr-10 flex justify-end">
-                      {isLeft && <TimelineCard exp={exp} from="right" />}
-                    </div>
-
-                    {/* Centre cell — dot */}
-                    <div className="flex justify-center items-center">
-                      <TimelineDot index={index} />
-                    </div>
-
-                    {/* Right cell */}
-                    <div className="pl-10">
-                      {!isLeft && <TimelineCard exp={exp} from="left" />}
-                    </div>
-                  </div>
-
+        <motion.ol
+          className="border-t border-border"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          variants={staggerContainer(0.12)}
+        >
+          {experiences.map((exp) => (
+            <motion.li
+              key={exp.company}
+              variants={fadeUp}
+              className="grid md:grid-cols-12 gap-4 md:gap-8 py-8 border-b border-border"
+            >
+              <div className="md:col-span-3">
+                <p className="font-mono text-xs text-muted-foreground">{exp.duration}</p>
+                <p className="mt-1 font-display font-bold text-primary">{exp.company}</p>
+              </div>
+              <div className="md:col-span-9">
+                <h3 className="font-display font-bold text-lg mb-2">{exp.title}</h3>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-prose">
+                  {exp.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {exp.highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="px-2 py-0.5 text-[11px] font-mono border border-border text-muted-foreground"
+                    >
+                      {h}
+                    </span>
+                  ))}
                 </div>
-              )
-            })}
-          </div>
-        </div>
+              </div>
+            </motion.li>
+          ))}
+        </motion.ol>
       </div>
     </section>
   )

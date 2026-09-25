@@ -1,16 +1,38 @@
 import type { Metadata } from 'next'
-import { DM_Sans } from 'next/font/google'
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from 'next-themes'
+import { LenisProvider } from '@/components/lenis-provider'
+import { MotionProvider } from '@/components/motion-provider'
+import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
-const DMSans = DM_Sans({ variable: "--font-dmsans", subsets: ["latin"], display: "swap" });
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "700"]
+});
+
+const inter = Inter({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"]
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "600"]
+});
 
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://zaphenath.com'),
   title: {
-    default: 'Zaphenath | Senior Frontend Engineer',
+    default: 'Zaphenath | Frontend Engineer',
     template: '%s | Zaphenath',
   },
   description: 'Portfolio of a frontend engineer specializing in React, Next.js, and modern web technologies.',
@@ -46,19 +68,17 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/favicon-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/apple-touch-icon.png',
   },
 }
 
@@ -68,11 +88,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${DMSans.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          {children}
-        </ThemeProvider>
+        <LenisProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <MotionProvider>
+              {children}
+              <Toaster />
+            </MotionProvider>
+          </ThemeProvider>
+        </LenisProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

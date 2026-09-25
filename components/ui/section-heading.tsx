@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 import { fadeUp, viewport } from '@/hooks/use-scroll-animation'
 import { cn } from '@/lib/utils'
 
@@ -12,14 +12,16 @@ interface SectionHeadingProps {
 }
 
 export function SectionHeading({ title, containerRef, className }: SectionHeadingProps) {
+  const shouldReduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
+    layoutEffect: false,
   })
 
-  // Smooth out the parallax drift
-  const xTransform = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const x = useSpring(xTransform, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  const xTransform = useTransform(scrollYProgress, [0, 1], [0, 160])
+  const xSpring = useSpring(xTransform, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  const x = shouldReduceMotion ? 0 : xSpring
 
   return (
     <div className={cn("mb-12 md:mb-16", className)}>
@@ -37,7 +39,7 @@ export function SectionHeading({ title, containerRef, className }: SectionHeadin
 
       {/* Primary Foreground Heading */}
       <motion.h2
-        className="text-3xl md:text-4xl font-bold relative z-10"
+        className="text-3xl md:text-4xl font-display font-bold relative z-10"
         initial="hidden"
         whileInView="visible"
         viewport={viewport}

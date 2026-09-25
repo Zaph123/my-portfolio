@@ -3,20 +3,28 @@
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { fadeUp, scaleIn, staggerContainer, viewport } from '@/hooks/use-scroll-animation'
+import { fadeUp, staggerContainer, viewport } from '@/hooks/use-scroll-animation'
 
 const skillCategories = [
   {
     category: 'Frontend',
-    skills: ['React.js', 'Next.js', 'TailwindCSS', 'TypeScript', 'Framer Motion', 'Zustand'],
+    skills: ['React.js', 'Next.js', 'TypeScript', 'Vite', 'Redux', 'Zustand', 'Context API', 'TanStack Query'],
   },
   {
-    category: 'Backend',
-    skills: ['Node.js', 'Express', 'Firebase', 'Supabase', 'MongoDB', 'PostgreSQL'],
+    category: 'Styling',
+    skills: ['TailwindCSS', 'CSS3', 'HeadlessUI', 'ShadCN'],
   },
   {
-    category: 'Tools & Libraries',
-    skills: ['Git', 'Docker', 'Webpack', 'Vite', 'Jest', 'React Testing Library'],
+    category: 'Backend & Database',
+    skills: ['Node.js', 'Firebase', 'REST APIs', 'Firestore', 'Supabase'],
+  },
+  {
+    category: 'Tools',
+    skills: ['Git/GitHub', 'pnpm', 'Postman', 'Figma', 'VS Code'],
+  },
+  {
+    category: 'Inclusive Design',
+    skills: ['Responsive Web Design', 'Accessibility-Focused Development'],
   },
 ]
 
@@ -24,45 +32,29 @@ export function SkillsSection() {
   const containerRef = useRef<HTMLElement>(null)
 
   return (
-    <section ref={containerRef} id="skills" className="py-20 md:py-32 overflow-hidden relative">
+    <section ref={containerRef} id="skills" className="py-24 md:py-36 overflow-hidden relative">
       <div className="container-center">
-        <SectionHeading title="Skills" containerRef={containerRef} />
+        <SectionHeading title="Stack" containerRef={containerRef} />
 
-        {/* Category columns stagger in */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl"
+          className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border"
           initial="hidden"
           whileInView="visible"
           viewport={viewport}
-          variants={staggerContainer(0.2)}
+          variants={staggerContainer(0.12)}
         >
-          {skillCategories.map((category, idx) => (
-            <motion.div
-              key={idx}
-              variants={fadeUp}
-              className="space-y-4"
-            >
-              <h3 className="text-lg font-bold text-accent">{category.category}</h3>
-
-              {/* Each skill tag pops in with scale */}
-              <motion.div
-                className="flex flex-wrap gap-2"
-                variants={staggerContainer(0.07)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewport}
-              >
-                {category.skills.map((skill, i) => (
-                  <motion.span
-                    key={i}
-                    variants={scaleIn}
-                    whileHover={{ scale: 1.08, transition: { duration: 0.15 } }}
-                    className="px-3 py-1 text-sm border border-border rounded hover:border-accent hover:text-accent transition-colors cursor-default"
-                  >
+          {skillCategories.map((category) => (
+            <motion.div key={category.category} variants={fadeUp} className="bg-background p-6 md:p-8">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.16em] text-primary mb-5">
+                {category.category}
+              </h3>
+              <ul className="space-y-2">
+                {category.skills.map((skill) => (
+                  <li key={skill} className="text-sm md:text-base text-foreground">
                     {skill}
-                  </motion.span>
+                  </li>
                 ))}
-              </motion.div>
+              </ul>
             </motion.div>
           ))}
         </motion.div>
