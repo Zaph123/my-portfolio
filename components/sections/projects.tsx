@@ -48,7 +48,7 @@ const projects = [
     description:
       'Engineered responsive interfaces for a faith-tech platform using Next.js, TailwindCSS, Zustand, and Supabase. Designed Admin/Member role-based access (RBAC) for dashboards with privacy-focused handling of sensitive financial records, and used Supabase real-time for transaction tracking.',
     technologies: ['Next.js', 'TailwindCSS', 'Zustand', 'Supabase', 'RBAC'],
-    liveUrl: 'https://starrik.com',
+    liveUrl: 'https://churchera.com',
     githubUrl: '#',
     span: 'md:col-span-6 md:row-span-2',
     featured: true,
