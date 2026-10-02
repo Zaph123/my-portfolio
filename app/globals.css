@@ -249,7 +249,7 @@
   }
 
   .container-center {
-    @apply max-w-4xl mx-auto px-6 md:px-8 relative;
+    @apply max-w-6xl mx-auto px-6 md:px-8 relative;
   }
 }
 

@@ -412,7 +412,7 @@ export function StickyStack({ cards }: { cards: React.ReactNode[] }) {
       {cards.map((card, i) => (
         <div
           key={i}
-          className="stack-card sticky top-0 min-h-[100dvh] flex items-center justify-center"
+          className="stack-card sticky top-0 min-h-dvh flex items-center justify-center"
         >
           {card}
         </div>
@@ -462,7 +462,7 @@ export function HorizontalPan({ children }: { children: React.ReactNode }) {
 
   return (
     <section ref={wrap} className="relative overflow-hidden">
-      <div ref={track} className="flex h-[100dvh] items-center">
+      <div ref={track} className="flex h-dvh items-center">
         {children}
       </div>
     </section>

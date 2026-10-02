@@ -1,11 +1,10 @@
 import { Navbar } from '@/components/sections/navbar'
-import { HeroSection } from '@/components/sections/hero'
+import { HomeIntro } from '@/components/HomeIntro'
 import { AboutSection } from '@/components/sections/about'
 import { ProjectsSection } from '@/components/sections/projects'
 import { SkillsSection } from '@/components/sections/skills'
 import { ExperienceSection } from '@/components/sections/experience'
 import { ContactSection } from '@/components/sections/contact'
-import { EducationSection } from '@/components/sections/education'
 import { Footer } from '@/components/sections/footer'
 import { JsonLd } from '@/components/json-ld'
 
@@ -34,7 +33,7 @@ export default function Home() {
     <main className="min-h-screen overflow-x-hidden w-full max-w-full">
       <JsonLd data={personSchema} />
       <Navbar />
-      <HeroSection />
+      <HomeIntro />
       <AboutSection />
       <ProjectsSection />
       <SkillsSection />

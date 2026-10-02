@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { TextReveal } from '@/components/motion/text-reveal'
 import { fadeUp, staggerContainer, viewport } from '@/hooks/use-scroll-animation'
 
 export function AboutSection() {
@@ -21,12 +22,8 @@ export function AboutSection() {
             viewport={viewport}
             variants={staggerContainer(0.12)}
           >
-            <motion.p variants={fadeUp} className="text-base md:text-lg text-foreground leading-relaxed">
-              Frontend engineer with 2+ years of experience shipping production web applications with React.js, Next.js, TypeScript, and Node.js. Proven across B2B SaaS, courier tech, and fintech, building component systems with attention to state management, accessibility, and responsive design, integrating Firebase/Supabase backends, and turning Figma designs into polished, accessible, high-performance interfaces.
-            </motion.p>
-            <motion.p variants={fadeUp} className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              Comfortable owning features end-to-end while collaborating across product, design, and backend teams. Experienced in implementing authentication systems, payment integrations, and real-time data synchronization.
-            </motion.p>
+            <TextReveal text="Frontend engineer with 2+ years of experience shipping production web applications with React.js, Next.js, TypeScript, and Node.js. Proven across B2B SaaS, courier tech, and fintech, building component systems with attention to state management, accessibility, and responsive design, integrating Firebase/Supabase backends, and turning Figma designs into polished, accessible, high-performance interfaces." split="word" className="text-base md:text-lg text-foreground leading-relaxed block" />
+            <TextReveal text="Comfortable owning features end-to-end while collaborating across product, design, and backend teams. Experienced in implementing authentication systems, payment integrations, and real-time data synchronization." split="word" className="text-base md:text-lg text-muted-foreground leading-relaxed block" />
           </motion.div>
 
           <motion.div
@@ -36,7 +33,7 @@ export function AboutSection() {
             viewport={viewport}
             variants={staggerContainer(0.1)}
           >
-            <h3 className="font-display font-bold text-base mb-4">Recent Focus Areas</h3>
+            <TextReveal text="Recent Focus Areas" split="char" className="font-display font-bold text-base mb-4 block" />
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="shrink-0">
