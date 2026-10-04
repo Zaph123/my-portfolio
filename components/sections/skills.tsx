@@ -149,7 +149,7 @@ export function SkillsSection() {
                   "min-h-11 rounded-full border px-4 text-sm font-medium transition-colors duration-200 motion-reduce:transition-none",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   pressed
-                    ? "border-transparent bg-[#C6FF00] text-[#0B0B0B]"
+                    ? "border-transparent bg-primary text-primary-foreground font-semibold"
                     : `border-border text-muted-foreground ${hoverOnly}border-foreground/40 ${hoverOnly}text-foreground`,
                 )}
               >
@@ -186,14 +186,14 @@ export function SkillsSection() {
                   aria-hidden="true"
                   className={
                     "pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 origin-left scale-x-0 rounded-sm bg-card " +
-                    "transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none " +
+                    "transition-transform duration-500 ease-[cubic-bezier(0.25, 1, 0.5, 1)] motion-reduce:transition-none " +
                     "[@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-x-100 md:-inset-x-6"
                   }
                 />
                 <h3
                   className={cn(
                     "font-display text-2xl font-light tracking-[-0.02em] text-foreground md:col-span-4 md:text-4xl",
-                    "transition-[opacity,transform,translate] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none",
+                    "transition-[opacity,transform,translate] duration-300 ease-[cubic-bezier(0.25, 1, 0.5, 1)] motion-reduce:transition-none",
                     "[@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-3",
                     rowUsed ? "opacity-100" : "opacity-30",
                   )}
@@ -206,7 +206,7 @@ export function SkillsSection() {
                     <li
                       key={skill.name}
                       className={cn(
-                        "text-base text-foreground transition-opacity duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none md:text-xl",
+                        "text-base text-foreground transition-opacity duration-300 ease-[cubic-bezier(0.25, 1, 0.5, 1)] motion-reduce:transition-none md:text-xl",
                         used(skill) ? "opacity-100" : "opacity-25",
                       )}
                     >

@@ -198,7 +198,7 @@ function ProjectCard({
     <article
       aria-label={project.title}
       className={reduce ? 'relative mb-8' : 'sticky top-0 h-svh'}
-      style={reduce ? undefined : { marginBottom: `${HOLD * 100}svh` }}
+      style={reduce ? undefined : { marginBottom: isLast ? '' : `${HOLD * 100}svh` }}
     >
       <JsonLd
         data={{

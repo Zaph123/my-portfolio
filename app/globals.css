@@ -12,11 +12,11 @@
   --popover: #FAFAF8;
   --popover-foreground: #0B0B0B;
 
-  /* Terminal lime primary (lime-500) — olive-green, WCAG-compliant */
-  --primary: #7FA800;
+  /* Neon lime primary (lime-300) — brand visual anchor */
+  --primary: #C6FF00;
   --primary-foreground: #0B0B0B;
 
-  /* Lime accent (lime-400) — toned down for light mode, better visual balance */
+  /* Lime accent (lime-400) — hover states & accents */
   --accent: #A3D600;
   --accent-foreground: #0B0B0B;
 
@@ -71,8 +71,8 @@
   --popover: #141412;
   --popover-foreground: #FAFAF8;
 
-  /* Terminal lime stays consistent in dark mode */
-  --primary: #7FA800;
+  /* Neon lime stays consistent in dark mode */
+  --primary: #C6FF00;
   --primary-foreground: #0B0B0B;
 
   /* Lime-400 for dark-mode accents (better contrast) */

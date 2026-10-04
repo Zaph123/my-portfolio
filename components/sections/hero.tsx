@@ -192,7 +192,6 @@ export function HeroSection({ revealed = false, portrait }: Props) {
           <Button
             asChild
             size="lg"
-            className="bg-[#C6FF00] text-[#0B0B0B] hover:bg-[#A3D600] font-semibold"
           >
             <Link href="#projects">See my work</Link>
           </Button>
