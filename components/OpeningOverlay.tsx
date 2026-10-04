@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { EASE_IN_OUT } from "@/lib/ease";
 
 const STAGGER = 0.25;
 
@@ -73,9 +74,9 @@ export function OpeningOverlay({
           initial={false}
           exit={{
             y: "-100%",
-            transition: { duration: 0.6, delay: 0.6, ease: [0.76, 0, 0.24, 1] },
+            transition: { duration: 0.6, delay: 0.6, ease: EASE_IN_OUT },
           }}
-          className="fixed inset-0 bg-background z-60 flex items-center justify-center"
+          className="fixed inset-0 bg-muted z-60 flex items-center justify-center"
           role="dialog"
           aria-label="Introduction"
         >

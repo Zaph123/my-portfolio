@@ -8,7 +8,7 @@ import { EASE_OUT } from "@/lib/ease";
 
 export const fadeUp = {
   hidden: { opacity: 0, y: 12 },
-  show: (delay: number = 0) => ({
+  visible: (delay: number = 0) => ({
     opacity: 1,
     y: 0,
     transition: { duration: 0.5, delay, ease: EASE_OUT },
@@ -17,7 +17,7 @@ export const fadeUp = {
 
 export const fadeLeft = {
   hidden: { opacity: 0, x: -24 },
-  show: {
+  visible: {
     opacity: 1,
     x: 0,
     transition: { duration: 0.55, ease: EASE_OUT },
@@ -26,7 +26,7 @@ export const fadeLeft = {
 
 export const fadeRight = {
   hidden: { opacity: 0, x: 24 },
-  show: {
+  visible: {
     opacity: 1,
     x: 0,
     transition: { duration: 0.55, ease: EASE_OUT },
@@ -35,7 +35,7 @@ export const fadeRight = {
 
 export const scaleIn = {
   hidden: { opacity: 0 },
-  show: {
+  visible: {
     opacity: 1,
     transition: { duration: 0.45, ease: EASE_OUT },
   },

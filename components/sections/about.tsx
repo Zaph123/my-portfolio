@@ -1,73 +1,119 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { useRef } from 'react'
-import { SectionHeading } from '@/components/ui/section-heading'
-import { TextReveal } from '@/components/motion/text-reveal'
-import { fadeUp, staggerContainer, viewport } from '@/hooks/use-scroll-animation'
+import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { SectionHeading } from "@/components/ui/section-heading";
+import {
+  fadeUp,
+  staggerContainer,
+  viewport,
+} from "@/hooks/use-scroll-animation";
 
-export function AboutSection() {
-  const containerRef = useRef<HTMLElement>(null)
+const STATEMENT =
+  "I take websites from rough idea 💡 to polished product ✨, on my own or alongside your team 🤝.";
+
+/** One word of the statement. Fades from dim to full as scroll progress passes its slice. */
+const EMOJI = /^(\p{Extended_Pictographic}\uFE0F?)(.*)$/u;
+
+function ScrubWord({
+  word,
+  progress,
+  range,
+}: {
+  word: string;
+  progress: MotionValue<number>;
+  range: [number, number];
+}) {
+  const reduce = useReducedMotion();
+  const opacity = useTransform(progress, range, reduce ? [1, 1] : [0.15, 1]);
+  const match = word.match(EMOJI);
 
   return (
-    <section ref={containerRef} id="about" className="py-24 md:py-36 overflow-hidden relative">
+    <motion.span style={{ opacity }} className="mr-[0.25em] inline-block">
+      {match ? (
+        <>
+          <span className="inline-block text-[0.75em] align-[0.08em]">
+            {match[1]}
+          </span>
+          {match[2]}
+        </>
+      ) : (
+        word
+      )}
+    </motion.span>
+  );
+}
+
+function ScrubStatement({ text }: { text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  // 0 when the statement's top reaches 85% of the viewport, 1 when its bottom reaches 50%.
+  // That finishes while the line is still comfortably on screen.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.5"],
+  });
+
+  const words = text.split(" ");
+  const style =
+    "block max-w-5xl font-display font-light leading-[1.05] tracking-[-0.03em] " +
+    "text-[clamp(2rem,5vw,4.5rem)] text-foreground";
+
+  return (
+    <>
+      {/* Unsplit text for assistive tech; the animated copy below is decorative */}
+      <p className="sr-only">{text}</p>
+      <p ref={ref} aria-hidden="true" className={style}>
+        {words.map((word, i) => {
+          // Each word gets an overlapping slice of 0..1 so the reveal reads as one sweep.
+          const start = (i / words.length) * 0.8;
+          return (
+            <ScrubWord
+              key={`${word}-${i}`}
+              word={word}
+              progress={scrollYProgress}
+              range={[start, start + 0.2]}
+            />
+          );
+        })}
+      </p>
+    </>
+  );
+}
+
+export function AboutSection() {
+  const containerRef = useRef<HTMLElement>(null);
+
+  return (
+    <section
+      ref={containerRef}
+      id="about"
+      className="relative overflow-hidden py-32 md:py-42"
+    >
       <div className="container-center">
         <SectionHeading title="About" containerRef={containerRef} />
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
-          <motion.div
-            className="lg:col-span-6 space-y-5 max-w-prose"
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewport}
-            variants={staggerContainer(0.12)}
-          >
-            <TextReveal text="Frontend engineer with 2+ years of experience shipping production web applications with React.js, Next.js, TypeScript, and Node.js. Proven across B2B SaaS, courier tech, and fintech, building component systems with attention to state management, accessibility, and responsive design, integrating Firebase/Supabase backends, and turning Figma designs into polished, accessible, high-performance interfaces." split="word" className="text-base md:text-lg text-foreground leading-relaxed block" />
-            <TextReveal text="Comfortable owning features end-to-end while collaborating across product, design, and backend teams. Experienced in implementing authentication systems, payment integrations, and real-time data synchronization." split="word" className="text-base md:text-lg text-muted-foreground leading-relaxed block" />
-          </motion.div>
-
-          <motion.div
-            className="lg:col-span-6 space-y-5"
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewport}
-            variants={staggerContainer(0.1)}
-          >
-            <TextReveal text="Recent Focus Areas" split="char" className="font-display font-bold text-base mb-4 block" />
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="shrink-0">
-                  <span className="w-3 h-3 bg-primary rounded-full block mt-1.5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-foreground">Starrik (Courier Tech)</h4>
-                  <p className="text-sm text-muted-foreground">Built a courier delivery platform with real-time tracking interfaces, vendor dashboards, and Firebase integration (Auth, Firestore, Storage).</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="shrink-0">
-                  <span className="w-3 h-3 bg-primary rounded-full block mt-1.5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-foreground">Churchera (FaithTech)</h4>
-                  <p className="text-sm text-muted-foreground">Engineered responsive interfaces for tithing and donations with Supabase, Admin/Member RBAC, and real-time transaction tracking.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="shrink-0">
-                  <span className="w-3 h-3 bg-primary rounded-full block mt-1.5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-foreground">Traytic (GodMode OS)</h4>
-                  <p className="text-sm text-muted-foreground">Built core admin screens with Next.js 16, React 19, TypeScript, and Tailwind CSS v4: analytics (Recharts), complex data tables, authentication (TOTP, Turnstile), and design system contributions.</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+        <div className="mt-16 md:mt-20">
+          <ScrubStatement text={STATEMENT} />
         </div>
+
+        <motion.p
+          className="mt-12 max-w-[65ch] text-base leading-relaxed text-muted-foreground md:text-lg"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          variants={fadeUp}
+        >
+          For the past two years I&apos;ve worked on delivery, giving, and
+          business tools. I like owning a feature from first sketch to launch,
+          and working closely with the people who will actually use it.
+        </motion.p>
       </div>
     </section>
-  )
+  );
 }

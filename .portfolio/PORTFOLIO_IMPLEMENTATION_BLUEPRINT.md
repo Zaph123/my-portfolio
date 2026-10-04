@@ -1344,8 +1344,8 @@ Need to inspect `motion-provider.tsx` and `use-scroll-animation.ts` to verify re
    - QuizManiac: Verify if live URL exists
    - HustleLoop: Verify if live URL exists
 2. **Confirm repository links** for each project:
-   - Starrik: Verify if `https://github.com/Zaph123/starrik` or similar exists
-   - Churchera: Verify if `https://github.com/Zaph123/churchera` or similar exists
+   - Starrik: Verify if `https://github.com/Atabang/starrik` or similar exists
+   - Churchera: Verify if `https://github.com/Churchera/churchera` or similar exists
    - QuizManiac: Verify if `https://github.com/Zaph123/QuizManiac` or similar exists
    - HustleLoop: Verify if `https://github.com/Zaph123/HustleLoop` or similar exists
    - Traytic: Verify if exists (less likely per nature of work)

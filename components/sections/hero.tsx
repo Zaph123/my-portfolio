@@ -28,7 +28,7 @@ const socials = [
 // Headline lines slide up from behind a mask. `custom` = delay in seconds.
 const lineVariants: Variants = {
   hidden: { y: "110%" },
-  show: (delay: number = 0) => ({
+  visible: (delay: number = 0) => ({
     y: 0,
     transition: { duration: 0.8, delay, ease: EASE_OUT },
   }),
@@ -37,7 +37,7 @@ const lineVariants: Variants = {
 // Everything else fades up.
 const fadeVariants: Variants = {
   hidden: { opacity: 0, y: 12 },
-  show: (delay: number = 0) => ({
+  visible: (delay: number = 0) => ({
     opacity: 1,
     y: 0,
     transition: { duration: 0.5, delay, ease: EASE_OUT },
@@ -70,7 +70,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
     variants,
     custom: delay,
     initial: instant ? (false as const) : ("hidden" as const),
-    animate: play ? ("show" as const) : ("hidden" as const),
+    animate: play ? ("visible" as const) : ("hidden" as const),
   });
   const line = (delay: number) => base(lineVariants, delay);
   const fade = (delay: number) => base(fadeVariants, delay);

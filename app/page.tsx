@@ -30,7 +30,7 @@ const personSchema = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden w-full max-w-full">
+    <main className="min-h-screen overflow-x-clip w-full max-w-full">
       <JsonLd data={personSchema} />
       <Navbar />
       <HomeIntro />
