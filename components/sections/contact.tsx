@@ -29,6 +29,8 @@ import {
 import { contactSchema, type ContactValues } from "@/lib/contact-schema";
 import { sendContactMessage } from "@/app/actions/contact";
 import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const EMAIL = "bassey2108@gmail.com";
 
@@ -223,7 +225,7 @@ export function ContactSection() {
                     className="group flex min-h-14 items-center gap-3 py-4"
                     aria-label={`Contact via ${label}`}
                   >
-                    <Icon className="h-4 w-4 shrink-0 text-primary" />
+                    <Icon className="h-4 w-4 shrink-0 text-accent" />
                     <span className="text-sm font-medium">{label}</span>
                     <span
                       className={cn(
@@ -271,47 +273,47 @@ export function ContactSection() {
           </div>
 
           <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
-            <label className="block space-y-1.5">
+            <motion.label variants={fadeUp} className="block space-y-1.5">
               <span className={labelClass}>Name</span>
-              <input
+              <Input
                 {...register("name")}
                 autoComplete="name"
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                className={cn(fieldClass, "h-12")}
+                className={cn( "h-12")}
               />
               {errors.name && (
                 <p id="name-error" className="text-xs text-destructive">
                   {errors.name.message}
                 </p>
               )}
-            </label>
-            <label className="block space-y-1.5">
+            </motion.label>
+            <motion.label variants={fadeUp} className="block space-y-1.5">
               <span className={labelClass}>Email</span>
-              <input
+              <Input
                 {...register("email")}
                 type="email"
                 autoComplete="email"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
-                className={cn(fieldClass, "h-12")}
+                className={cn( "h-12")}
               />
               {errors.email && (
                 <p id="email-error" className="text-xs text-destructive">
                   {errors.email.message}
                 </p>
               )}
-            </label>
+            </motion.label>
           </motion.div>
 
           <motion.label variants={fadeUp} className="block space-y-1.5">
             <span className={labelClass}>Message</span>
-            <textarea
+            <Textarea
               {...register("message")}
               rows={6}
               aria-invalid={!!errors.message}
               aria-describedby={errors.message ? "message-error" : undefined}
-              className={cn(fieldClass, "min-h-36 resize-y py-3")}
+              className={cn( "min-h-36 resize-y py-3")}
             />
             {errors.message && (
               <p id="message-error" className="text-xs text-destructive">
