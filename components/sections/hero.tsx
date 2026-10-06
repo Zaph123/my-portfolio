@@ -12,6 +12,7 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
+import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { EASE_OUT } from "@/lib/ease";
 
@@ -25,16 +26,7 @@ const socials = [
   { href: "mailto:bassey2108@gmail.com", label: "Email", icon: Mail },
 ];
 
-// Headline lines slide up from behind a mask. `custom` = delay in seconds.
-const lineVariants: Variants = {
-  hidden: { y: "110%" },
-  visible: (delay: number = 0) => ({
-    y: 0,
-    transition: { duration: 0.8, delay, ease: EASE_OUT },
-  }),
-};
-
-// Everything else fades up.
+// Soft fades for non-headline content.
 const fadeVariants: Variants = {
   hidden: { opacity: 0, y: 12 },
   visible: (delay: number = 0) => ({
@@ -66,14 +58,12 @@ export function HeroSection({ revealed = false, portrait }: Props) {
   const instant = reduce;
   const play = instant || revealed;
 
-  const base = (variants: Variants, delay: number) => ({
-    variants,
+  const fade = (delay: number) => ({
+    variants: fadeVariants,
     custom: delay,
     initial: instant ? (false as const) : ("hidden" as const),
     animate: play ? ("visible" as const) : ("hidden" as const),
   });
-  const line = (delay: number) => base(lineVariants, delay);
-  const fade = (delay: number) => base(fadeVariants, delay);
 
   // ---- Scroll parallax ----
   // progress: 0 when the hero is at the top, 1 when it has scrolled fully out.
@@ -116,9 +106,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
 
   const headline =
     "font-display font-light text-foreground leading-[1] tracking-[-0.03em] " +
-    "text-[clamp(2.5rem,7.5vw,6.5rem)] block w-fit";
-  // Mask: clips the sliding line, with a little room for descenders.
-  const mask = "overflow-hidden pb-[0.12em]";
+    "text-[clamp(2.5rem,7.5vw,6.5rem)] w-fit";
 
   return (
     <section
@@ -132,48 +120,48 @@ export function HeroSection({ revealed = false, portrait }: Props) {
         </h1>
 
         <div className="relative grid gap-y-1 md:grid-cols-12 md:gap-y-2">
-          {/* Parallax (x) lives on the mask; the reveal (y) lives on the text inside it */}
-          <motion.div
+          {/* Parallax (x) on the mask; slide-up reveal on the text inside */}
+          <Reveal
+            as="div"
+            innerAs="p"
+            active={play}
+            delay={0}
+            y="110%"
             style={{ x: x1 }}
-            className={`${mask} md:col-span-12 md:row-start-1`}
+            className="md:col-span-12 md:row-start-1"
+            innerClassName={headline}
+            innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
-            <motion.p
-              {...line(0)}
-              {...hoverProps}
-              className={headline}
-              aria-hidden="true"
-            >
-              Hi, I&apos;m Zaphenath.
-            </motion.p>
-          </motion.div>
+            Hi, I&apos;m <span className="font-bold">Zaphenath.</span>
+          </Reveal>
 
-          <motion.div
+          <Reveal
+            as="div"
+            innerAs="p"
+            active={play}
+            delay={0.1}
+            y="110%"
             style={{ x: x2 }}
-            className={`${mask} md:col-span-8 md:col-start-5 md:row-start-2 md:content-center`}
+            className="md:col-span-8 md:col-start-5 md:row-start-2 md:content-center"
+            innerClassName={headline}
+            innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
-            <motion.p
-              {...line(0.1)}
-              {...hoverProps}
-              className={headline}
-              aria-hidden="true"
-            >
-              I build <span className="font-semibold">websites</span>
-            </motion.p>
-          </motion.div>
+            I build <span className="font-semibold italic">websites</span>
+          </Reveal>
 
-          <motion.div
+          <Reveal
+            as="div"
+            innerAs="p"
+            active={play}
+            delay={0.2}
+            y="110%"
             style={{ x: x3 }}
-            className={`${mask} md:col-span-11 md:col-start-2 md:row-start-3`}
+            className="md:col-span-11 md:col-start-2 md:row-start-3"
+            innerClassName={headline}
+            innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
-            <motion.p
-              {...line(0.2)}
-              {...hoverProps}
-              className={headline}
-              aria-hidden="true"
-            >
-              people enjoy using.
-            </motion.p>
-          </motion.div>
+            people enjoy using.
+          </Reveal>
 
           {/* Short plain-language intro, tucked left of line 2 on desktop, last on mobile */}
           <motion.p

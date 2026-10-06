@@ -1,5 +1,4 @@
 "use client";
-// beui.dev/components/motion/text-animation
 
 import { motion, type Transition, useInView, useReducedMotion } from "motion/react";
 import { useRef, type ElementType, type ReactNode } from "react";

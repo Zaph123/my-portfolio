@@ -34,9 +34,15 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     }
     document.addEventListener('click', handleAnchor)
 
-    // Cleanup on unmount
+    const lock = () => lenisRef.current?.stop()
+    const unlock = () => lenisRef.current?.start()
+    window.addEventListener('lenis:lock', lock)
+    window.addEventListener('lenis:unlock', unlock)
+
     return () => {
       document.removeEventListener('click', handleAnchor)
+      window.removeEventListener('lenis:lock', lock)
+      window.removeEventListener('lenis:unlock', unlock)
       lenisRef.current?.destroy()
       lenisRef.current = null
     }

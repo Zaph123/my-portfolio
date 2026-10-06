@@ -7,45 +7,20 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Github } from 'lucide-react'
 import {
   motion,
-  useInView,
   useMotionTemplate,
   useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion'
+import { Reveal } from '@/components/motion/reveal'
 import { Button } from '@/components/ui/button'
 import type { Project, ProjectImage } from '@/data/projects'
 import { cn } from '@/lib/utils'
 
 const EASE = [0.22, 1, 0.36, 1] as const
-const inViewOptions = { once: true, margin: '0px 0px -80px 0px' } as const
 
 // Hover styles only on devices that really hover
 const hoverOnly = '[@media(hover:hover)_and_(pointer:fine)]:'
-
-/**
- * Slides content up from behind a mask. The observer watches the static mask, not the moving
- * child: a child translated fully below an overflow-hidden parent has zero visible area and
- * would never be reported as in view.
- */
-function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
-  const reduce = !!useReducedMotion()
-  const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, inViewOptions)
-
-  return (
-    <span ref={ref} className={cn('block overflow-hidden pb-[0.12em]', className)}>
-      <motion.span
-        className="block"
-        initial={reduce ? false : { y: '105%' }}
-        animate={{ y: reduce || inView ? 0 : '105%' }}
-        transition={{ duration: 0.8, delay, ease: EASE }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  )
-}
 
 function FadeIn({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
   const reduce = !!useReducedMotion()

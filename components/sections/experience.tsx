@@ -1,22 +1,19 @@
 'use client'
 
-import { useRef, useState, type ReactNode } from 'react'
+import { useRef, useState } from 'react'
 import {
   motion,
-  useInView,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
 } from 'framer-motion'
+import { Reveal } from '@/components/motion/reveal'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { cn } from '@/lib/utils'
 
 const EASE = [0.22, 1, 0.36, 1] as const
-
-// Same trigger as your shared `viewport`, kept local and `as const` so it type-checks with useInView
-const inViewOptions = { once: true, margin: '0px 0px -80px 0px' } as const
 
 // Hover styles only on devices that really hover
 const hoverOnly = '[@media(hover:hover)_and_(pointer:fine)]:'
@@ -71,40 +68,6 @@ const experiences: Experience[] = [
     ],
   },
 ]
-
-/**
- * Slides its content up from behind a mask when it enters the viewport.
- *
- * The observer watches the MASK, not the moving child. A child translated fully below an
- * `overflow-hidden` parent is clipped to zero visible area, so an IntersectionObserver
- * on it (which is what `whileInView` uses) never fires and the content stays hidden.
- */
-function Reveal({
-  children,
-  delay = 0,
-  className,
-}: {
-  children: ReactNode
-  delay?: number
-  className?: string
-}) {
-  const reduce = !!useReducedMotion()
-  const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, inViewOptions)
-
-  return (
-    <span ref={ref} className={cn('block overflow-hidden pb-[0.12em]', className)}>
-      <motion.span
-        className="block"
-        initial={reduce ? false : { y: '105%' }}
-        animate={{ y: reduce || inView ? 0 : '105%' }}
-        transition={{ duration: 0.8, delay, ease: EASE }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  )
-}
 
 function ExperienceItem({ exp }: { exp: Experience }) {
   const ref = useRef<HTMLLIElement>(null)

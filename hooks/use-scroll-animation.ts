@@ -52,4 +52,4 @@ export const staggerContainer = (staggerDelay = 0.1) => ({
   },
 })
 
-export const viewport = { once: true, margin: '0px 0px -80px 0px' }
+export const viewport = { once: true, margin: '0px 0px -80px 0px' } as const
