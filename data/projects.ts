@@ -6,10 +6,14 @@ export type ProjectImage = {
   /** Describe what is actually in the image. Check each one against the file. */
   alt: string
   caption?: string
-  /** CSS aspect-ratio for the frame, e.g. '16 / 9', '4 / 5'. Defaults: 16 / 9 full-width, 4 / 5 in pairs. */
-  aspect?: string
+  /**
+   * Real pixel size of the file. Frames use it so mockups are shown whole, never cropped.
+   * Get both numbers by running: node scripts/image-dims.mjs public/<folder>
+   * Without them the frame falls back to 16 / 9 (the image is still shown whole, with bars if the ratio differs).
+   */
+  width?: number
+  height?: number
 }
-
 export type Project = {
   slug: string
   title: string
@@ -49,11 +53,30 @@ export const projects: Project[] = [
     imageLabel: 'Starrik shown on an iPhone mockup',
     imageKind: 'mockup',
     gallery: [
-      { src: '/starrik/starrik-iphone-mockup-coal-stand.jpg', alt: 'Starrik shown on an iPhone mockup' },
-      { src: '/starrik/starrik-minimalistic-ipad-mockup.jpg', alt: 'Starrik shown on a minimalistic iPad mockup' },
-      { src: '/starrik/starrik-tablet-with-keyboard-mockup.jpg', alt: 'Starrik shown on a tablet with keyboard mockup' },
-      { src: '/starrik/macbook-air-and-phone-mockup-starrik.jpg', alt: 'Starrik shown on MacBook Air and phone mockup' },
-      { src: '/starrik/macbook-air-and-phone-mockup-starrik-transparent.jpg', alt: 'Starrik shown on transparent MacBook Air and phone mockup' },
+      {
+        src: '/starrik/starrik-iphone-mockup-coal-stand.jpg',
+        alt: 'Starrik shown on an iPhone mockup',
+        width: 3000,
+        height: 2250,
+      },
+      {
+        src: '/starrik/starrik-minimalistic-ipad-mockup.jpg',
+        alt: 'Starrik shown on a minimalistic iPad mockup',
+        width: 4000,
+        height: 3000,
+      },
+      {
+        src: '/starrik/starrik-tablet-with-keyboard-mockup.jpg',
+        alt: 'Starrik shown on a tablet with keyboard mockup',
+        width: 4000,
+        height: 3000,
+      },
+      {
+        src: '/starrik/macbook-air-and-phone-mockup-starrik.jpg',
+        alt: 'Starrik shown on MacBook Air and phone mockup',
+        width: 4000,
+        height: 3000,
+      }
     ],
   },
   {
@@ -76,26 +99,38 @@ export const projects: Project[] = [
       {
         src: '/churchera/churchera-hands-holding-tablet-mockup.jpg',
         alt: 'Churchera shown on a tablet held in two hands (mockup)',
+        width: 4000,
+        height: 2667,
       },
       {
         src: '/churchera/churchera-iphone-14-pro-mockup.jpg',
         alt: 'Churchera shown on iPhone 14 Pro mockup',
+        width: 3000,
+        height: 2250,
       },
       {
         src: '/churchera/churchera-iphone-15-mockup-with-back-panel.jpg',
         alt: 'Churchera shown on iPhone 15 mockup with back panel',
+        width: 4000,
+        height: 3000,
       },
       {
         src: '/churchera/churchera-macbook-air-and-phone-mockup-churchera.jpg',
         alt: 'Churchera shown on MacBook Air and phone mockup',
+        width: 4000,
+        height: 3000,
       },
       {
         src: '/churchera/churchera-womens-hands-holding-phone.jpg',
         alt: "Churchera shown on women's hands holding phone",
+        width: 4000,
+        height: 2666,
       },
       {
         src: '/churchera/macbook-air-and-phone-mockup-churchera-transparent.jpg',
         alt: 'Churchera shown on transparent MacBook Air and phone mockup',
+        width: 4000,
+        height: 3000,
       },
     ],
   },
@@ -124,12 +159,42 @@ export const projects: Project[] = [
     imageLabel: 'Traytic shown on a laptop mockup',
     imageKind: 'mockup',
     gallery: [
-      { src: '/traytic/traytic-laptop-mockup.jpg', alt: 'Traytic shown on a laptop mockup' },
-      { src: '/traytic/traytic-hands-holding-phone-mockup.jpg', alt: 'Traytic shown on hands holding phone mockup' },
-      { src: '/traytic/traytic-multiple-three-phone-screens-mockup.jpg', alt: 'Traytic shown on multiple three phone screens mockup' },
-      { src: '/traytic/traytic-striped-background-m3-macbook-pro.jpg', alt: 'Traytic shown on striped background with M3 MacBook Pro' },
-      { src: '/traytic/tablet-with-keyboard-mockup (1).jpg', alt: 'Traytic shown on tablet with keyboard mockup' },
-      { src: '/traytic/traytic.png', alt: 'Traytic logo' },
+      {
+        src: '/traytic/traytic-laptop-mockup.jpg',
+        alt: 'Traytic shown on a laptop mockup',
+        width: 2697,
+        height: 1634,
+      },
+      {
+        src: '/traytic/traytic-hands-holding-phone-mockup.jpg',
+        alt: 'Traytic shown on hands holding phone mockup',
+        width: 4000,
+        height: 2667,
+      },
+      {
+        src: '/traytic/traytic-multiple-three-phone-screens-mockup.jpg',
+        alt: 'Traytic shown on multiple three phone screens mockup',
+        width: 4000,
+        height: 2800,
+      },
+      {
+        src: '/traytic/traytic-striped-background-m3-macbook-pro.jpg',
+        alt: 'Traytic shown on striped background with M3 MacBook Pro',
+        width: 3000,
+        height: 2250,
+      },
+      {
+        src: '/traytic/tablet-with-keyboard-mockup (1).jpg',
+        alt: 'Traytic shown on tablet with keyboard mockup',
+        width: 4000,
+        height: 3000,
+      },
+      {
+        src: '/traytic/traytic.png',
+        alt: 'Traytic logo',
+        width: 794,
+        height: 493,
+      },
     ],
   },
   {
@@ -152,14 +217,20 @@ export const projects: Project[] = [
       {
         src: '/quizmaniac/quizmaniac-floating-macbook-air-mockup.jpg',
         alt: 'QuizManiac shown on a floating MacBook Air mockup',
+        width: 4000,
+        height: 3000,
       },
       {
         src: '/quizmaniac/quizmaniac-cell-phone-mockup-desk-background.jpg',
         alt: 'QuizManiac shown on cell phone mockup with desk background',
+        width: 4000,
+        height: 2857,
       },
       {
         src: '/quizmaniac/quizmaniac-leather-background-tablet-mockup.jpg',
         alt: 'QuizManiac shown on leather background tablet mockup',
+        width: 3000,
+        height: 2000,
       },
     ],
   },
@@ -183,18 +254,26 @@ export const projects: Project[] = [
       {
         src: '/hustleloop/hustleloop-iphone-mockup-dark-background.jpg',
         alt: 'HustleLoop shown on an iPhone mockup against a dark background',
+        width: 3000,
+        height: 2250,
       },
       {
         src: '/hustleloop/hustleloop-floating-apple-watches-mockup.jpg',
         alt: 'HustleLoop shown on floating Apple watches mockup',
+        width: 3500,
+        height: 5000,
       },
       {
         src: '/hustleloop/hustleloop-m2-macbook-air-screen-mockup.jpg',
         alt: 'HustleLoop shown on M2 MacBook Air screen mockup',
+        width: 3000,
+        height: 2070,
       },
       {
         src: '/hustleloop/hustleloop-woman-hands-on-the-laptop.jpg',
         alt: 'HustleLoop shown with woman hands on laptop',
+        width: 4680,
+        height: 3120,
       },
     ],
   },

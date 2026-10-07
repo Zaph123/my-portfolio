@@ -9,7 +9,7 @@ import { Footer } from '@/components/sections/footer'
 import { JsonLd } from '@/components/json-ld'
 
 export const metadata = {
-  title: 'Home | Zaphenath',
+  title: 'Home',
   description: 'Portfolio of Zaphenath, a frontend engineer specializing in React, Next.js, and TypeScript.',
   alternates: {
     canonical: '/',

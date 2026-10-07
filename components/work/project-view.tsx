@@ -1,26 +1,33 @@
 'use client'
 
 // components/work/project-view.tsx
-import { useRef, type ReactNode } from 'react'
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight, Github } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Github, Maximize2 } from 'lucide-react'
 import {
   motion,
+  useInView,
   useMotionTemplate,
   useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion'
-import { Reveal } from '@/components/motion/reveal'
 import { Button } from '@/components/ui/button'
+import { Lightbox } from '@/components/work/lightbox'
 import type { Project, ProjectImage } from '@/data/projects'
 import { cn } from '@/lib/utils'
+import { Reveal } from '../motion/reveal'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+const inViewOptions = { once: true, margin: '0px 0px -80px 0px' } as const
 
 // Hover styles only on devices that really hover
 const hoverOnly = '[@media(hover:hover)_and_(pointer:fine)]:'
+
+const ratioOf = (image: ProjectImage) => (image.width && image.height ? image.width / image.height : 16 / 9)
+
+
 
 function FadeIn({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
   const reduce = !!useReducedMotion()
@@ -36,86 +43,123 @@ function FadeIn({ children, delay = 0, className }: { children: ReactNode; delay
   )
 }
 
-/** Top-of-page image: its clip-path opens once on load. */
-function HeroImage({ image }: { image: ProjectImage }) {
-  const reduce = !!useReducedMotion()
+type OpenFn = (index: number, trigger: HTMLElement) => void
+
+/** The little "enlarge" chip: always visible on touch, appears on hover for mouse users. */
+function ExpandChip() {
   return (
-    <motion.div
-      initial={reduce ? false : { clipPath: 'inset(14% 10% round 28px)' }}
-      animate={{ clipPath: 'inset(0% 0% round 0px)' }}
-      transition={{ duration: 1.1, delay: 0.25, ease: EASE }}
-      className="relative overflow-hidden rounded-xl bg-card"
-      style={{ aspectRatio: image.aspect ?? '16 / 9' }}
+    <span
+      aria-hidden="true"
+      className={cn(
+        'pointer-events-none absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-background/90 text-foreground',
+        'transition-[opacity,translate] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] motion-reduce:transition-none',
+        `${hoverOnly}opacity-0 ${hoverOnly}translate-y-1 ${hoverOnly}group-hover:translate-y-0 ${hoverOnly}group-hover:opacity-100`,
+      )}
     >
-      <motion.div
-        initial={reduce ? false : { scale: 1.18 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.4, delay: 0.25, ease: EASE }}
-        className="absolute inset-0"
-      >
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          priority
-          sizes="(min-width: 1024px) 896px, 100vw"
-          className="object-cover object-center"
-        />
-      </motion.div>
-    </motion.div>
+      <Maximize2 className="h-4 w-4" />
+    </span>
   )
 }
 
-/** Gallery image: the clip-path opens as it scrolls into the viewport, and reverses on scroll back. */
-function RevealImage({ image, defaultAspect, sizes }: { image: ProjectImage; defaultAspect: string; sizes: string }) {
-  const ref = useRef<HTMLDivElement>(null)
+const frameButton = cn(
+  'group relative block w-full cursor-zoom-in overflow-hidden rounded-xl bg-card',
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+)
+
+/**
+ * The lead image: biggest on the board, and the only one with the scroll-linked clip-path reveal,
+ * the same move as the Selected Work deck. Keeping the effect to one image keeps it meaningful.
+ */
+function LeadImage({ image, onOpen }: { image: ProjectImage; onOpen: OpenFn }) {
+  const ref = useRef<HTMLButtonElement>(null)
   const reduce = !!useReducedMotion()
 
-  // Same signature move as the Selected Work deck, so the two feel like one site.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start 0.35'] })
   const p = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [0, 1])
   const insetY = useTransform(p, [0, 1], [12, 0])
   const insetX = useTransform(p, [0, 1], [8, 0])
   const radius = useTransform(p, [0, 1], [28, 0])
   const clipPath = useMotionTemplate`inset(${insetY}% ${insetX}% round ${radius}px)`
-  const scale = useTransform(p, [0, 1], [1.15, 1])
+  const scale = useTransform(p, [0, 1], [1.12, 1])
 
   return (
     <figure>
-      <div
+      <button
         ref={ref}
-        className="relative overflow-hidden rounded-xl bg-card"
-        style={{ aspectRatio: image.aspect ?? defaultAspect }}
+        type="button"
+        onClick={(e) => onOpen(0, e.currentTarget)}
+        aria-label={`View larger: ${image.alt}`}
+        className={frameButton}
+        style={{ aspectRatio: ratioOf(image) }}
       >
         <motion.div style={{ clipPath }} className="absolute inset-0">
           <motion.div style={{ scale }} className="absolute inset-0">
-            <Image src={image.src} alt={image.alt} fill sizes={sizes} className="object-cover object-center" />
+            <Image
+              src={image.src}
+              alt=""
+              fill
+              priority
+              sizes="(min-width: 1024px) 896px, 100vw"
+              className="object-contain object-center"
+            />
           </motion.div>
         </motion.div>
-      </div>
+        <ExpandChip />
+      </button>
       {image.caption && <figcaption className="mt-3 text-sm text-muted-foreground">{image.caption}</figcaption>}
     </figure>
   )
 }
 
-type Block = { type: 'full'; image: ProjectImage } | { type: 'pair'; images: [ProjectImage, ProjectImage] }
+/** A board cell. Its width is set by the row (proportional to its ratio), so the image is never cropped. */
+function Cell({ image, index, onOpen }: { image: ProjectImage; index: number; onOpen: OpenFn }) {
+  const reduce = !!useReducedMotion()
+  const ratio = ratioOf(image)
 
-/** Alternates full-width images and side-by-side pairs, so the page has a rhythm for any count. */
-function buildBlocks(images: ProjectImage[]): Block[] {
-  const blocks: Block[] = []
+  return (
+    <motion.figure
+      initial={reduce ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+      transition={{ duration: 0.6, ease: EASE }}
+      // On desktop each figure grows in proportion to its ratio, which makes every image in a row the same height
+      className="min-w-0 md:flex-[var(--r)_1_0%]"
+      style={{ '--r': ratio } as CSSProperties}
+    >
+      <button
+        type="button"
+        onClick={(e) => onOpen(index, e.currentTarget)}
+        aria-label={`View larger: ${image.alt}`}
+        className={frameButton}
+        style={{ aspectRatio: ratio }}
+      >
+        <Image
+          src={image.src}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 700px, 100vw"
+          className="object-contain object-center"
+        />
+        <ExpandChip />
+      </button>
+      {image.caption && <figcaption className="mt-3 text-sm text-muted-foreground">{image.caption}</figcaption>}
+    </motion.figure>
+  )
+}
+
+type Item = { image: ProjectImage; index: number }
+
+/** Groups the non-lead images into rows of 2, with a row of 3 when an odd image would be left alone. */
+function buildRows(items: Item[]): Item[][] {
+  const rows: Item[][] = []
   let i = 0
-  let wantPair = false
-  while (i < images.length) {
-    if (wantPair && i + 1 < images.length) {
-      blocks.push({ type: 'pair', images: [images[i], images[i + 1]] })
-      i += 2
-    } else {
-      blocks.push({ type: 'full', image: images[i] })
-      i += 1
-    }
-    wantPair = !wantPair
+  while (i < items.length) {
+    const left = items.length - i
+    const take = left === 3 ? 3 : Math.min(2, left)
+    rows.push(items.slice(i, i + take))
+    i += take
   }
-  return blocks
+  return rows
 }
 
 export function ProjectView({ project, next }: { project: Project; next: Project }) {
@@ -123,7 +167,19 @@ export function ProjectView({ project, next }: { project: Project; next: Project
     ? project.gallery
     : [{ src: project.imageSrc, alt: project.imageLabel }]
   const [lead, ...rest] = gallery
-  const blocks = buildBlocks(rest)
+  const rows = buildRows(rest.map((image, i) => ({ image, index: i + 1 })))
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const trigger = useRef<HTMLElement | null>(null)
+
+  const openAt: OpenFn = (index, el) => {
+    trigger.current = el
+    setOpenIndex(index)
+  }
+  const close = () => {
+    setOpenIndex(null)
+    trigger.current?.focus() // hand focus back to the image that was opened
+  }
 
   return (
     <main className="pt-28 md:pt-36">
@@ -205,47 +261,26 @@ export function ProjectView({ project, next }: { project: Project; next: Project
         </FadeIn>
       </div>
 
-      <div className="container-center mt-14 md:mt-20">
-        <HeroImage image={lead} />
-      </div>
-
-      {blocks.length > 0 && (
-        <div className="container-center mt-16 space-y-10 md:mt-24 md:space-y-16">
-          {blocks.map((block, i) =>
-            block.type === 'full' ? (
-              <RevealImage
-                key={`${block.image.src}-${i}`}
-                image={block.image}
-                defaultAspect="16 / 9"
-                sizes="(min-width: 1024px) 896px, 100vw"
-              />
-            ) : (
-              <div key={`pair-${i}`} className="grid gap-10 md:grid-cols-2 md:gap-8">
-                {block.images.map((image) => (
-                  <RevealImage
-                    key={image.src}
-                    image={image}
-                    defaultAspect="4 / 5"
-                    sizes="(min-width: 768px) 440px, 100vw"
-                  />
-                ))}
-              </div>
-            ),
-          )}
-        </div>
-      )}
+      {/* The board: one big lead image, then rows where every image keeps its real shape */}
+      <section aria-label={`${project.title} images`} className="container-center mt-14 space-y-3 md:mt-20 md:space-y-4">
+        <LeadImage image={lead} onOpen={openAt} />
+        {rows.map((row) => (
+          <div key={row[0].index} className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
+            {row.map(({ image, index }) => (
+              <Cell key={image.src} image={image} index={index} onOpen={openAt} />
+            ))}
+          </div>
+        ))}
+      </section>
 
       <p className="container-center mt-12 text-sm text-muted-foreground">
-        Images are presentation mockups, not live product screenshots.
+        Images are presentation mockups, not live product screenshots. Select one to view it larger.
       </p>
 
       {/* Leads into the next chapter instead of ending the page */}
       <section aria-labelledby="next-project" className="mt-28 border-t border-border py-20 md:mt-40 md:py-28">
         <div className="container-center">
-          <p
-            id="next-project"
-            className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
-          >
+          <p id="next-project" className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Next project
           </p>
           <Link href={`/work/${next.slug}`} className="group mt-4 flex items-end justify-between gap-6">
@@ -267,6 +302,8 @@ export function ProjectView({ project, next }: { project: Project; next: Project
           </Link>
         </div>
       </section>
+
+      <Lightbox images={gallery} index={openIndex} onClose={close} onIndexChange={setOpenIndex} />
     </main>
   )
 }

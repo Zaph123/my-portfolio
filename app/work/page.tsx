@@ -20,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {}
 
   return {
-    title: `${project.title} | Zaphenath`,
+    // Root layout template already appends "| Zaphenath"
+    title: project.title,
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}` },
   }

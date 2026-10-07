@@ -105,8 +105,10 @@ export function HeroSection({ revealed = false, portrait }: Props) {
   };
 
   const headline =
-    "font-display font-light text-foreground leading-[1] tracking-[-0.03em] " +
-    "text-[clamp(2.5rem,7.5vw,6.5rem)] w-fit";
+    "font-display font-light text-foreground leading-[0.92] tracking-[-0.03em] " +
+    "text-[clamp(2.5rem,7.5vw,6.5rem)] w-fit md:leading-none";
+  // Mask padding is for descenders; keep it tight on mobile so stacked lines don't look loose.
+  const lineMask = "pb-[0.04em] md:pb-[0.12em]";
 
   return (
     <section
@@ -119,7 +121,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
           Hi, I&apos;m Zaphenath. I build websites people enjoy using.
         </h1>
 
-        <div className="relative grid gap-y-1 md:grid-cols-12 md:gap-y-2">
+        <div className="relative grid gap-y-0 md:grid-cols-12 md:gap-y-1">
           {/* Parallax (x) on the mask; slide-up reveal on the text inside */}
           <Reveal
             as="div"
@@ -128,7 +130,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
             delay={0}
             y="110%"
             style={{ x: x1 }}
-            className="md:col-span-12 md:row-start-1"
+            className={`${lineMask} md:col-span-12 md:row-start-1`}
             innerClassName={headline}
             innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
@@ -142,7 +144,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
             delay={0.1}
             y="110%"
             style={{ x: x2 }}
-            className="md:col-span-8 md:col-start-5 md:row-start-2 md:content-center"
+            className={`${lineMask} md:col-span-8 md:col-start-5 md:row-start-2 md:content-center`}
             innerClassName={headline}
             innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
@@ -156,7 +158,7 @@ export function HeroSection({ revealed = false, portrait }: Props) {
             delay={0.2}
             y="110%"
             style={{ x: x3 }}
-            className="md:col-span-11 md:col-start-2 md:row-start-3"
+            className={`${lineMask} md:col-span-11 md:col-start-2 md:row-start-3`}
             innerClassName={headline}
             innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
