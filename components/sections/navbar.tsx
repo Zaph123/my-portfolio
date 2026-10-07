@@ -194,7 +194,8 @@ export function Navbar() {
                 <ThemeToggle
                   variant="circle-blur"
                   start="bottom-up"
-                  className="inline-flex text-sm items-center justify-center rounded-md cursor-pointer bg-background/90 backdrop-blur-md text-muted-foreground transition-colors hover:text-foreground hover:bg-background/80"
+                  iconClassName="size-4"
+                  className="inline-flex items-center justify-center rounded-md cursor-pointer bg-background/90 backdrop-blur-md text-muted-foreground transition-colors hover:text-foreground hover:bg-background/80"
                   aria-label={
                     resolvedTheme === "dark"
                       ? "Switch to light theme"
