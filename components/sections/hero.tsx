@@ -15,6 +15,7 @@ import {
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { EASE_OUT } from "@/lib/ease";
+import { TextScramble } from "@/components/motion/text-scramble";
 
 const socials = [
   { href: "https://github.com/Zaph123", label: "GitHub", icon: Github },
@@ -105,8 +106,8 @@ export function HeroSection({ revealed = false, portrait }: Props) {
   };
 
   const headline =
-    "font-display font-light text-foreground leading-[0.92] tracking-[-0.03em] " +
-    "text-[clamp(2.5rem,7.5vw,6.5rem)] w-fit md:leading-none";
+    "font-display font-light text-foreground tracking-[-0.03em] " +
+    "text-[clamp(2.5rem,7.5vw,6.5rem)] leading-[1.2] w-fit md:leading-none";
   // Mask padding is for descenders; keep it tight on mobile so stacked lines don't look loose.
   const lineMask = "pb-[0.04em] md:pb-[0.12em]";
 
@@ -134,7 +135,13 @@ export function HeroSection({ revealed = false, portrait }: Props) {
             innerClassName={headline}
             innerProps={{ ...hoverProps, "aria-hidden": true }}
           >
-            Hi, I&apos;m <span className="font-bold">Zaphenath.</span>
+            Hi, I&apos;m{' '}
+            <TextScramble
+              text="Zaphenath."
+              nickname="Einstein."
+              className="font-bold"
+              active={play}
+            />
           </Reveal>
 
           <Reveal

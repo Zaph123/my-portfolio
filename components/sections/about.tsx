@@ -59,6 +59,9 @@ function ScrubStatement({ text }: { text: string }) {
     offset: ["start 0.85", "end 0.5"],
   });
 
+  const reduce = useReducedMotion();
+  const tilt = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [3, 0])
+
   const words = text.split(" ");
   const style =
     "block max-w-5xl font-display font-light leading-[1.05] tracking-[-0.03em] " +
@@ -68,7 +71,7 @@ function ScrubStatement({ text }: { text: string }) {
     <>
       {/* Unsplit text for assistive tech; the animated copy below is decorative */}
       <p className="sr-only">{text}</p>
-      <p ref={ref} aria-hidden="true" className={style}>
+      <motion.p initial={{ rotateY: 90 }} ref={ref} aria-hidden="true" className={style} style={{ rotateZ: tilt, transformOrigin: '0% 50%' }}>
         {words.map((word, i) => {
           // Each word gets an overlapping slice of 0..1 so the reveal reads as one sweep.
           const start = (i / words.length) * 0.8;
@@ -81,7 +84,7 @@ function ScrubStatement({ text }: { text: string }) {
             />
           );
         })}
-      </p>
+      </motion.p>
     </>
   );
 }

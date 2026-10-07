@@ -12,8 +12,8 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
 
     lenisRef.current = new Lenis({
       autoRaf: true,
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.6,
+      easing: (t) => Math.min(1, 1.0005 - Math.pow(2, -12 * t)),
       orientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
