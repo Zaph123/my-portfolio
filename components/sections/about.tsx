@@ -71,7 +71,7 @@ function ScrubStatement({ text }: { text: string }) {
     <>
       {/* Unsplit text for assistive tech; the animated copy below is decorative */}
       <p className="sr-only">{text}</p>
-      <motion.p initial={{ rotateY: 90 }} ref={ref} aria-hidden="true" className={style} style={{ rotateZ: tilt, transformOrigin: '0% 50%' }}>
+      <motion.p ref={ref} aria-hidden="true" className={style} style={{ rotateZ: tilt, transformOrigin: '0% 50%' }}>
         {words.map((word, i) => {
           // Each word gets an overlapping slice of 0..1 so the reveal reads as one sweep.
           const start = (i / words.length) * 0.8;
