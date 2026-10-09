@@ -8,14 +8,16 @@ export const metadata = {
 
 export default function CustomNotFound() {
   return (
+    <main className="grid place-content-center min-h-screen w-full">
     <NotFoundTerminal
       code="404"
       title="Page not found"
       description="The page you're looking for doesn't exist or has been moved."
       homeHref="/"
       homeLabel="Back to home"
-      browseHref="/work"
+      browseHref="/#projects"
       browseLabel="Explore projects"
     />
+    </main>
   );
 }
